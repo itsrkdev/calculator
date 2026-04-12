@@ -1,214 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --calc-bg: rgba(255, 255, 255, 0.95);
+            --btn-digit: #ffffff;
+            --btn-op: #f1f3f7;
+            --accent: #6c5ce7;
+            --text-main: #2d3436;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
         .container {
-            position: relative;
-            width: 216px;
-            background-color: #ABABAB;
-            margin: 50px auto;
-            padding: 8px 8px 20px 8px;
-            border-radius: 4px;
-            border-top: 2px solid #FFF;
-            border-right: 2px solid #FFF;
-            border-bottom: 2px solid #C1C1C1;
-            border-left: 2px solid #C1C1C1;
-            box-shadow: -3px 3px 7px rgba(0, 0, 0, .6), inset -100px 0px 100px rgba(255, 255, 255, .5);
+            width: 100%;
+            max-width: 400px; /* Tablet/Desktop limit */
+            background: var(--calc-bg);
+            padding: 25px;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
         }
 
-        .inpdiv {
-            position: relative;
-            height: 80px;
-            width: 149px;
+        /* Responsive adjustments for Phone */
+        @media (max-width: 400px) {
+            .container {
+                padding: 15px;
+                border-radius: 20px;
+            }
+            .button {
+                height: 55px !important;
+                font-size: 18px !important;
+            }
+        }
+
+        .display-area {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            text-align: right;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
         }
 
         #input {
-            position: absolute;
-            background-color: #FFF;
-            height: 80px;
-            width: 149px;
-            padding: 0 8px;
-            border-radius: 4px;
-            border-top: 2px solid #C1C1C1;
-            border-right: 2px solid #C1C1C1;
-            border-bottom: 2px solid #FFF;
-            border-left: 2px solid #FFF;
-            font-size: 25px;
-            color: #191616;
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 2rem;
+            background: transparent;
             text-align: right;
-            font-weight: 400;
-            box-shadow: inset 0px 0px 10px #030303, inset 0px -20px 1px rgba(150, 150, 150, .2);
+            color: var(--text-main);
+            font-weight: 600;
         }
-          ::placeholder{
-            font-size: 25px;
-          }
+
         #para {
-            position: absolute;
-            color: #595656;
-            font-size: 18px;
-            bottom: 8px;
-            right: 10px;
+            height: 25px;
+            color: #a0a0a0;
+            font-size: 1rem;
+            margin-bottom: 5px;
         }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
         .button {
-            margin: 2px;
-            width: 42px;
-            height: 42px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 4px;
+            height: 65px;
+            border: none;
+            border-radius: 18px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--btn-digit);
+            color: var(--text-main);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        .digits {
-            color: #181818;
-            background-color: #EBEBEB;
-            border-radius: 4px;
-            border-top: 2px solid #FFF;
-            border-right: 2px solid #FFF;
-            border-bottom: 2px solid #C1C1C1;
-            border-left: 2px solid #C1C1C1;
-            box-shadow: 0px 0px 2px #030303, inset 0px -20px 1px #DCDCDC;
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            background: #fdfdfd;
         }
 
+        .button:active {
+            transform: translateY(0);
+        }
+
+        /* Different Colors for Operators */
         .mathButtons {
-            color: #FFF;
-            margin: 2px 2px 6px 2px;
-            text-shadow: -1px -1px 0px #44006F;
-            background-color: #434343;
-            box-shadow: 0px 0px 2px #030303, inset 0px -20px 1px #2E2E2E;
-            border-top: 2px solid #C1C1C1;
-            border-right: 2px solid #C1C1C1;
-            border-bottom: 2px solid #181818;
-            border-left: 2px solid #181818;
+            background: var(--btn-op);
+            color: var(--accent);
+        }
+
+        .action-btn {
+            color: #ff7675;
         }
 
         #sum {
-            background-color: rgb(3, 83, 3);
-            box-shadow: 0px 0px 2px rgb(3, 83, 3), inset 0px -20px 1px rgb(3, 83, 3);
-            color: #FFF;
-            margin: 2px 2px 6px 2px;
-            text-shadow: -1px -1px 0px #44006F;
-            border-top: 2px solid #C1C1C1;
-            border-right: 2px solid #C1C1C1;
-            border-bottom: 2px solid rgb(3, 83, 3);
-            border-left: 2px solid rgb(3, 83, 3);
+            background: var(--accent);
+            color: white;
+            grid-column: span 1;
         }
 
-        #clearButton {
-            color: #FFF;
-            text-shadow: -1px -1px 0px #44006F;
-            background-color: #D20000;
-            border-top: 2px solid #FF8484;
-            border-right: 2px solid #FF8484;
-            border-bottom: 2px solid #800000;
-            border-left: 2px solid #800000;
-            box-shadow: 0px 0px 2px #030303, inset 0px -20px 1px #B00000;
+        #sum:hover {
+            background: #5b4bc4;
         }
 
-        #deletebtn {
-            position: absolute;
-            right: -47px;
-            top: 20px;
-            color: #FFF;
-            background-color: #434343;
-            background-color: #434343;
-            box-shadow: 0px 0px 2px #030303, inset 0px -20px 1px #2E2E2E;
-            border-top: 2px solid #C1C1C1;
-            border-right: 2px solid #C1C1C1;
-            border-bottom: 2px solid #181818;
-            border-left: 2px solid #181818;
-            text-shadow: -1px -1px 0px #44006F;
-
-        }
-
-        .digits:hover,
-        #clearButton:hover,
-        .mathButtons:hover,
-        #sum:hover,
-        #deletebtn:hover {
-            background-color: #FFBA75;
-            box-shadow: 0px 0px 2px #FFBA75, inset 0px -20px 1px #FF8000;
-            border-top: 2px solid #FFF;
-            border-top: 2px solid #FFF;
-            border-right: 2px solid #FFF;
-            border-bottom: 2px solid #AE5700;
-            border-left: 2px solid #AE5700;
+        .zero {
+            grid-column: span 2;
         }
     </style>
 </head>
-
 <body>
+
     <div class="container">
-        <div class="inpdiv"><input type="text" id="input" placeholder="0"><button id="deletebtn" class="button"
-                onclick="del()">Del</button>
+        <div class="display-area">
             <p id="para"></p>
+            <input type="text" id="input" placeholder="0" readonly>
         </div>
 
-        <br>
-        <button class="button digits" onclick="func(9)">9</button>
-        <button class="button digits" onclick="func(8)">8</button>
-        <button class="button digits" onclick="func(7)">7</button>
-        <button class="button mathButtons" onclick="func('+')">+</button>
-        <br>
-        <button class="button digits" onclick="func(6)">6</button>
-        <button class="button digits" onclick="func(5)">5</button>
-        <button class="button digits" onclick="func(4)">4</button>
-        <button class="button mathButtons" onclick="func('-')">-</button>
-        <br>
-        <button class="button digits" onclick="func(3)">3</button>
-        <button class="button digits" onclick="func(2)">2</button>
-        <button class="button digits" onclick="func(1)">1</button>
-        <button class="button mathButtons" onclick="func('*')">X</button>
-        <br>
-        <button id="clearButton" class="button" onclick="cl()">C</button>
-        <button class="button digits" onclick="func(0)">0</button>
-        <button id="sum" class="button" onclick="ev()">=</button>
-        <button class="button mathButtons" onclick="func('/')">/</button>
-
+        <div class="button-grid">
+            <button class="button action-btn" onclick="cl()">AC</button>
+            <button class="button action-btn" onclick="del()">⌫</button>
+            <button class="button mathButtons" onclick="func('/')">÷</button>
+            <button class="button mathButtons" onclick="func('*')">×</button>
+            
+            <button class="button" onclick="func('7')">7</button>
+            <button class="button" onclick="func('8')">8</button>
+            <button class="button" onclick="func('9')">9</button>
+            <button class="button mathButtons" onclick="func('-')">−</button>
+            
+            <button class="button" onclick="func('4')">4</button>
+            <button class="button" onclick="func('5')">5</button>
+            <button class="button" onclick="func('6')">6</button>
+            <button class="button mathButtons" onclick="func('+')">+</button>
+            
+            <button class="button" onclick="func('1')">1</button>
+            <button class="button" onclick="func('2')">2</button>
+            <button class="button" onclick="func('3')">3</button>
+            <button id="sum" class="button" onclick="ev()">=</button>
+            
+            <button class="button zero" onclick="func('0')">0</button>
+            <button class="button" onclick="func('.')">.</button>
+            <button class="button mathButtons" onclick="func('%')">%</button>
+        </div>
     </div>
 
     <script>
-        let inpt = document.getElementById("input")
+        const inpt = document.getElementById("input");
+        const para = document.getElementById("para");
+
         function func(tag) {
-            // console.log(tag)
-            inpt.value += tag;
-            chfun()
+            const lastChar = inpt.value.slice(-1);
+            const operators = ['+', '-', '*', '/', '%'];
+
+            // Multiple operators bug fix
+            if (operators.includes(tag) && operators.includes(lastChar)) {
+                inpt.value = inpt.value.slice(0, -1) + tag;
+            } 
+            else if (inpt.value === "" && operators.includes(tag) && tag !== '-') {
+                return;
+            } 
+            else {
+                inpt.value += tag;
+            }
+            
+            // Live Preview
+            try {
+                if(inpt.value.length > 0) {
+                    para.innerHTML = eval(inpt.value.replace('×', '*').replace('÷', '/'));
+                }
+            } catch(e) { para.innerHTML = ""; }
         }
+
         function ev() {
-            console.log(eval(inpt.value))
-            inpt.value = eval(inpt.value);
-            document.getElementById("para").innerHTML = "";
-
+            try {
+                if (inpt.value !== "") {
+                    // Replace icons with real math symbols for eval
+                    let expression = inpt.value;
+                    let result = eval(expression);
+                    inpt.value = Number.isInteger(result) ? result : result.toFixed(2);
+                    para.innerHTML = "";
+                }
+            } catch (e) {
+                inpt.value = "Error";
+                setTimeout(cl, 1500);
+            }
         }
+
         function cl() {
-            console.log(inpt.value)
-            inpt.value = ""
-        }
-        function del() {
-            let text = inpt.value
-            // console.log(text.slice(0, text.length - 1))
-            let deleted = text.slice(0, text.length - 1)
-            inpt.value = deleted
-            // inpt.value = inpt.value.slice(0, inpt.value.length - 1)
-        }
-        function chfun() {
-            document.getElementById("para").innerHTML = eval(inpt.value);
-            // console.log(inpt.value)
+            inpt.value = "";
+            para.innerHTML = "";
         }
 
+        function del() {
+            inpt.value = inpt.value.slice(0, -1);
+            if(inpt.value === "") para.innerHTML = "";
+        }
     </script>
 </body>
 </html>
